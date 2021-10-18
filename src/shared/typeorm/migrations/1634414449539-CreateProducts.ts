@@ -1,26 +1,20 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreateProducts1634414449539 implements MigrationInterface {
+export class CreateProducts1607437608841 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
-        // linha para evitar o erro de falta de extensão dentro do banco de dados
-        // ao invés de criar pelo bando de dados, a extensão será criada pela migration
-        // await queryRunner.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"');
-        await queryRunner.query(
-            'CREATE EXTENSION IF NOT EXISTS uuid-ossp SCHEMA "public" VERSION 1.1',
-        );
         await queryRunner.createTable(
             new Table({
                 name: 'products',
                 columns: [
                     {
                         name: 'id',
-                        type: 'uuid', // tipo id unico universal
-                        isPrimary: true, // chave primário
-                        generationStrategy: 'uuid', // estrategia de gerecao, pode ser autoincremente
+                        type: 'uuid',
+                        isPrimary: true,
+                        generationStrategy: 'uuid',
                         default: 'uuid_generate_v4()',
                     },
                     {
-                        name: 'description',
+                        name: 'name',
                         type: 'varchar',
                     },
                     {
@@ -30,13 +24,13 @@ export class CreateProducts1634414449539 implements MigrationInterface {
                         scale: 2,
                     },
                     {
-                        name: 'qtd',
+                        name: 'quantity',
                         type: 'int',
                     },
                     {
                         name: 'created_at',
                         type: 'timestamp',
-                        default: 'now()', // funcao para pegar a data e hora no momento
+                        default: 'now()',
                     },
                     {
                         name: 'updated_at',
@@ -52,5 +46,3 @@ export class CreateProducts1634414449539 implements MigrationInterface {
         await queryRunner.dropTable('products');
     }
 }
-
-// para rodar a migration usa o yarn typeorm migration:run
